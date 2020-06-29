@@ -3,17 +3,17 @@ import {
   FieldPickerSynced,
   FormField,
   TablePickerSynced,
+  Tooltip,
   useBase,
   useGlobalConfig,
 } from '@airtable/blocks/ui';
 import React, {useState} from 'react';
 
 function BlockSettings({setIsShowingSettings}) {
+  // store the settings in globalConfig
   const globalConfig = useGlobalConfig();
   const base = useBase();
   const table = base.getTableByIdIfExists(globalConfig.get('tableId'));
-  const taskField = table ? table.getFieldByIdIfExists(globalConfig.get('taskFieldId')) : null;
-  const doneField = table ? table.getFieldByIdIfExists(globalConfig.get('doneFieldId')) : null;
   const customCss = globalConfig.get('customCss');
   const validSettings = validateSettings();
   const canSetSettings = globalConfig.checkPermissionsForSet('customCss').hasPermission;
@@ -27,7 +27,7 @@ function BlockSettings({setIsShowingSettings}) {
       </FormField>
       <FormField
         label="Field for markdown (long text)"
-        description="Users must have permissions to update this field"
+        description="Users must have permission to update this field"
       >
         <FieldPickerSynced table={table}
           allowedTypes={["multilineText"]}
@@ -36,7 +36,7 @@ function BlockSettings({setIsShowingSettings}) {
       </FormField>
       <FormField
         label="Field for html (long text)"
-        description="Users must have permissions to update this field"
+        description="Users must have permission to update this field"
       >
         <FieldPickerSynced table={table}
           allowedTypes={["multilineText"]}
@@ -66,7 +66,7 @@ function BlockSettings({setIsShowingSettings}) {
       </div>
       <details>
         <summary>Credits</summary>
-        <p>Copyright  ©  2020, Kuovonne Vorderbruggen</p>
+        <p>Copyright © 2020, Kuovonne Vorderbruggen</p>
           <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
           <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
           <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
@@ -91,7 +91,10 @@ function BlockSettings({setIsShowingSettings}) {
   );
 }
 
+
 function validateSettings() {
+  // If the settings are invalid, return false
+  // If the settings are valid, return the settings
   const globalConfig = useGlobalConfig();
   const base = useBase();
   // verify there is a table
@@ -103,7 +106,7 @@ function validateSettings() {
   // verify there is an htmlField of the proper field type
   const htmlField = table.getFieldByIdIfExists(globalConfig.get('htmlFieldId'));
   if (!htmlField || htmlField.type != "multilineText") { return false; }
-  // verify the markdownField and htmlField are different
+  // verify the markdownField and htmlField are different from each other
   if (markdownField.id == htmlField.id) { return false; }
   // passed all checks
   return {
@@ -116,7 +119,9 @@ function validateSettings() {
 
 
 function validatePermissions() {
-  // get the settings
+  // If user doesn't have the permissions needed to run the block, return false
+  // If does have the necessary permissions, return true
+  // get the table and fields
   const globalConfig = useGlobalConfig();
   const base = useBase();
   const table = base.getTableByIdIfExists(globalConfig.get('tableId'));
@@ -130,6 +135,7 @@ function validatePermissions() {
       [markdownField.name]: 'test string',
       [htmlField.name]: 'test string',
     });
+  // return results of the permission check
   return updateRecordCheckResult.hasPermission;
 }
 
