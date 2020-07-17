@@ -1,6 +1,6 @@
 # Markdown to Html Converter
 
-Type Markdown in Airtable, preview as HTML, and save the HTML in another field for publishing.
+Type Markdown in (Airtable)[http://airtable.com/], preview as HTML, and save the HTML in another field for publishing.
 
 ## What this Block Does
 
