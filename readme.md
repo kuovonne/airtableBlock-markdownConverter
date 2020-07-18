@@ -2,6 +2,8 @@
 
 Type Markdown in [Airtable](http://airtable.com/), preview as HTML, and save the HTML in another field for publishing.
 
+![screen shot pf markdown converter](/markdown_converter.png)
+
 ## What this Block Does
 
 This custom block for Airtable allows a user to edit text in markdown, preview it as html, and 
