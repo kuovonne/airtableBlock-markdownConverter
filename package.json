@@ -3,7 +3,7 @@
         "@airtable/blocks": "0.0.52",
         "react": "^16.13.0",
         "react-dom": "^16.13.0",
-        "marked": "1.1.0"
+        "marked": "4.0.10"
     },
     "devDependencies": {
         "eslint": "^6.8.0",
